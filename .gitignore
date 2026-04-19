@@ -1,0 +1,16 @@
+# Local key files (NEVER commit secrets)
+**/key.txt
+**/*.key
+
+# Local artifacts
+*.png
+*.mp4
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
