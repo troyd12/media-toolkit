@@ -11,13 +11,25 @@ AI image + video generation toolkit for Claude Code.
 | `straico-image` | Text-to-image | Straico (Flux, DALL-E, Ideogram, Recraft, Imagen, GPT Image, …) |
 | `image-to-motion` | Add cinematic motion to stills | Local ffmpeg — no API, no credits |
 
-## Setup
+## One-line install
 
-### 1. Install the plugin
+**macOS / Linux / Git Bash on Windows:**
+```bash
+git clone https://github.com/troyd12/media-toolkit.git ~/media-toolkit && \
+mkdir -p ~/.claude/skills && \
+cp -r ~/media-toolkit/skills/* ~/.claude/skills/ && \
+echo "✅ media-toolkit skills installed to ~/.claude/skills/"
+```
 
-Symlink or copy the plugin into your Claude Code plugins directory, OR install via your Claude Code marketplace if published.
+**PowerShell on Windows:**
+```powershell
+git clone https://github.com/troyd12/media-toolkit.git $HOME/media-toolkit
+New-Item -ItemType Directory -Force -Path $HOME/.claude/skills | Out-Null
+Copy-Item -Recurse -Force $HOME/media-toolkit/skills/* $HOME/.claude/skills/
+Write-Host "media-toolkit skills installed"
+```
 
-For a personal install, simply make sure each skill in `skills/` is also present in `~/.claude/skills/`.
+After install, the skills auto-load in every Claude Code session. To uninstall, delete the four folders inside `~/.claude/skills/`.
 
 ### 2. API keys
 
