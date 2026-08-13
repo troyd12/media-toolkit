@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Mock ffmpeg: records the exact argument vector (one per line) to
+# MOCK_FFMPEG_ARGS so tests can assert on the constructed filtergraph
+# without rendering a single frame.
+set -euo pipefail
+
+if [ -n "${MOCK_FFMPEG_ARGS:-}" ]; then
+  : > "$MOCK_FFMPEG_ARGS"
+  for arg in "$@"; do
+    printf '%s\n' "$arg" >> "$MOCK_FFMPEG_ARGS"
+  done
+fi
+exit 0

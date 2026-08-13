@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Mock curl for testing the Pollo scripts offline.
+#
+# Behaviour is driven by env vars set by the test harness:
+#   MOCK_SUBMIT_FILE     fixture returned for the POST submit call
+#   MOCK_POLL_FILE       fixture returned for each GET poll call
+#   MOCK_DOWNLOAD_LOG    (optional) file to record the download URL into
+#   MOCK_SUBMIT_BODY_LOG (optional) file to record the POST -d payload into
+#
+# Request classification:
+#   * an "-o <path>" argument  -> a download; write placeholder bytes to <path>
+#   * a "-X POST" argument      -> the submit call; emit MOCK_SUBMIT_FILE
+#   * anything else             -> a poll call; emit MOCK_POLL_FILE
+set -euo pipefail
+
+out=""
+is_post=0
+url=""
+body=""
+prev=""
+for arg in "$@"; do
+  case "$prev" in
+    -o) out="$arg" ;;
+    -d) body="$arg" ;;
+  esac
+  case "$arg" in
+    -X) ;; # handled via next arg below
+    POST) is_post=1 ;;
+    http*://*) url="$arg" ;;
+  esac
+  prev="$arg"
+done
+
+if [ -n "$out" ]; then
+  # Download branch: record the URL and write placeholder bytes.
+  [ -n "${MOCK_DOWNLOAD_LOG:-}" ] && printf '%s\n' "$url" >> "$MOCK_DOWNLOAD_LOG"
+  printf 'MOCK-BINARY-CONTENT' > "$out"
+  exit 0
+fi
+
+if [ "$is_post" -eq 1 ]; then
+  [ -n "${MOCK_SUBMIT_BODY_LOG:-}" ] && printf '%s\n' "$body" >> "$MOCK_SUBMIT_BODY_LOG"
+  cat "${MOCK_SUBMIT_FILE:?MOCK_SUBMIT_FILE not set}"
+else
+  cat "${MOCK_POLL_FILE:?MOCK_POLL_FILE not set}"
+fi

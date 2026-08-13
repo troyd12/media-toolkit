@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# No-op sleep so the poll loops run instantly under test.
+exit 0

@@ -3,7 +3,7 @@
 # Usage: generate.sh "path/to/image.png" [preset] [duration] [output_size]
 # Defaults: preset=push-in, duration=5, output_size=1920x1080
 # Presets: push-in | pull-out | pan-left | pan-right | pan-up | pan-down |
-#          ken-burns-1 | ken-burns-2 | drift-left | drift-right | rotate-cw | rotate-ccw
+#          ken-burns-1 | ken-burns-2 | drift-left | drift-right
 
 set -euo pipefail
 

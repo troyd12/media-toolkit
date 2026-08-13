@@ -1,0 +1,11 @@
+{
+  "data": {
+    "status": "succeed",
+    "videoList": [
+      {
+        "videoUrl": "https://cdn.example.com/result-watermark.png",
+        "videoUrlNoWatermark": "https://cdn.example.com/result.png"
+      }
+    ]
+  }
+}
