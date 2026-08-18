@@ -187,9 +187,12 @@ write our own:
 
 Two things are worth doing, in this order:
 
-1. **Adopt the generated-README pattern** for `media-toolkit`. Small script, a
-   `manifest.json` that already half-exists as `.claude-plugin/plugin.json`, and it
-   removes the hand-maintained skills table. Purely our own code — no licensing question.
+1. ~~**Adopt the generated-README pattern** for `media-toolkit`.~~ **Done** — see
+   `tools/build_readme.py` and `tools/README.md`. `skills/` is now the source of truth;
+   the README tables and the `skills` array in `.claude-plugin/plugin.json` are
+   generated, and `.github/workflows/readme.yml` fails the build on drift. It caught a
+   live one on the first run: the README told users to delete "the four folders" from a
+   three-skill toolkit.
 2. **Audit our three `SKILL.md` files** against the bad-vs-good examples in
    `claude-code-skills-guide`. Read-and-learn, nothing copied.
 

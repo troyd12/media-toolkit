@@ -4,11 +4,13 @@ AI image + video generation toolkit for Claude Code.
 
 ## What's inside
 
+<!-- BEGIN GENERATED: skills-table -->
 | Skill | Purpose | Backend |
 |---|---|---|
 | `pollo-image` | Text-to-image | Pollo AI (`pollo-image-v2`, others) |
 | `pollo-video` | Text-to-video | Pollo AI (Seedance, Kling, Veo, etc.) |
 | `image-to-motion` | Add cinematic motion to stills | Local ffmpeg — no API, no credits |
+<!-- END GENERATED: skills-table -->
 
 ## One-line install
 
@@ -28,26 +30,32 @@ Copy-Item -Recurse -Force $HOME/media-toolkit/skills/* $HOME/.claude/skills/
 Write-Host "media-toolkit skills installed"
 ```
 
-After install, the skills auto-load in every Claude Code session. To uninstall, delete the four folders inside `~/.claude/skills/`.
+<!-- BEGIN GENERATED: uninstall -->
+After install, the skills auto-load in every Claude Code session. To uninstall, delete `pollo-image/`, `pollo-video/`, and `image-to-motion/` from `~/.claude/skills/`.
+<!-- END GENERATED: uninstall -->
 
 ### 2. API keys
 
 Save raw keys (no quotes, no banners) into these files:
 
+<!-- BEGIN GENERATED: keys-table -->
 | Service | Path |
 |---|---|
 | Pollo AI | `~/.pollo/key.txt` |
 
 `image-to-motion` requires no key — only ffmpeg installed (`winget install Gyan.FFmpeg`).
+<!-- END GENERATED: keys-table -->
 
 ### 3. Shell aliases (optional)
 
 Add to `~/.bashrc`:
+<!-- BEGIN GENERATED: aliases -->
 ```bash
 alias polloimg='bash ~/.claude/skills/pollo-image/generate.sh'
 alias pollovid='bash ~/.claude/skills/pollo-video/generate.sh'
 alias motionize='bash ~/.claude/skills/image-to-motion/generate.sh'
 ```
+<!-- END GENERATED: aliases -->
 
 PowerShell equivalents go in `$PROFILE`.
 

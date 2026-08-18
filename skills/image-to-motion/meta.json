@@ -1,0 +1,9 @@
+{
+  "summary": "Add cinematic motion to stills",
+  "backend": "Local ffmpeg — no API, no credits",
+  "entrypoint": "generate.sh",
+  "alias": "motionize",
+  "order": 3,
+  "key": null,
+  "requires": "only ffmpeg installed (`winget install Gyan.FFmpeg`)"
+}
