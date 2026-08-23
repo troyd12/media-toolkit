@@ -182,22 +182,36 @@ def render_skills_table(skills):
     return "\n".join(lines)
 
 
-def render_keys_table(skills):
+def render_prerequisites(skills):
+    """The whole prerequisites section body.
+
+    The "save your keys here" lead-in is generated rather than authored so it
+    cannot outlive the last keyed skill — when every backend is local, a README
+    telling people where to put API keys is worse than no README.
+    """
     keyed = []
     for skill in skills:
         if skill.key and skill.key not in keyed:
             keyed.append(skill.key)
 
+    lines = []
     if keyed:
-        lines = ["| Service | Path |", "|---|---|"]
+        lines.append("Save raw API keys (no quotes, no banners) into these files:")
+        lines.append("")
+        lines.append("| Service | Path |")
+        lines.append("|---|---|")
         lines += ["| {} | `{}` |".format(k["service"], k["path"]) for k in keyed]
-    else:
-        lines = ["No skill in this toolkit needs an API key."]
 
-    for skill in skills:
-        if not skill.key and skill.requires:
+    notes = [
+        "`{}` needs no API key — {}.".format(s.name, s.requires)
+        for s in skills if not s.key and s.requires
+    ]
+    if notes:
+        if lines:
             lines.append("")
-            lines.append("`{}` requires no key — {}.".format(skill.name, skill.requires))
+        lines += notes
+    elif not lines:
+        lines.append("No skill in this toolkit needs an API key.")
     return "\n".join(lines)
 
 
@@ -250,7 +264,7 @@ def build_readme(skills):
     for name, body in (
         ("skills-table", render_skills_table(skills)),
         ("uninstall", render_uninstall(skills)),
-        ("keys-table", render_keys_table(skills)),
+        ("prerequisites", render_prerequisites(skills)),
         ("aliases", render_aliases(skills)),
     ):
         text = replace_block(text, name, body)
@@ -291,6 +305,10 @@ def write_or_check(path, new_text, check):
     return True
 
 
+def plural(n):
+    return "1 skill" if n == 1 else "{} skills".format(n)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
@@ -316,13 +334,13 @@ def main():
                 "the result.\n".format(", ".join(rel(p) for p in stale))
             )
             return 1
-        print("{} skills — README.md and plugin.json are up to date.".format(len(skills)))
+        print("{} — README.md and plugin.json are up to date.".format(plural(len(skills))))
         return 0
 
     if stale:
-        print("regenerated {} from {} skills".format(", ".join(rel(p) for p in stale), len(skills)))
+        print("regenerated {} from {}".format(", ".join(rel(p) for p in stale), plural(len(skills))))
     else:
-        print("{} skills — nothing to change.".format(len(skills)))
+        print("{} — nothing to change.".format(plural(len(skills))))
     return 0
 
 

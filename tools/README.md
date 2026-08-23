@@ -30,13 +30,13 @@ skills/<name>/
 | `entrypoint` | | script the alias runs; defaults to `generate.sh` |
 | `alias` | | shell alias name; omit for no alias |
 | `order` | | position in the tables; unordered skills sort last, then alphabetically |
-| `key` | | `{"service": …, "path": …}`, or `null` for none. Skills sharing a key produce one row |
-| `requires` | | for keyless skills: completes the sentence "requires no key — …" |
+| `key` | | `{"service": …, "path": …}`, or `null` for none. Skills sharing a key produce one row. With no keyed skill at all, the "save your keys here" lead-in disappears with the table |
+| `requires` | | for keyless skills: completes the sentence "needs no API key — …" |
 
 ### What it writes
 
 Four marker-delimited regions in `README.md` — `skills-table`, `uninstall`,
-`keys-table`, `aliases` — plus the `skills` array in
+`prerequisites`, `aliases` — plus the `skills` array in
 `.claude-plugin/plugin.json` (every other key in that file is left alone).
 Prose outside the markers is never touched:
 

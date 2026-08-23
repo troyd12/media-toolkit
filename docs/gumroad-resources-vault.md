@@ -117,11 +117,11 @@ Regardless of whether we mirror anything from this vault, four ideas port cleanl
 `media-toolkit`:
 
 1. **Generated README from a manifest.** One `build_repo.py`-style script owns the
-   README; the manifest is the source of truth. We hand-maintain the skills table in
-   `README.md` today and it will drift the moment a fourth skill lands.
+   README; the manifest is the source of truth. Adopted — `tools/build_readme.py`.
+   It paid for itself the day Pollo was dropped: two skills left the tree and every
+   table, the alias list, and the plugin manifest followed from one command.
 2. **Redaction on the way in, not on review.** A `SECRET_RE` pass over anything about
-   to be committed is cheap insurance for a repo whose whole subject is API keys
-   (`~/.pollo/key.txt` etc.).
+   to be committed is cheap insurance for any skill that ships an API recipe.
 3. **Self-closing issues for silent failures.** The pairing check is a good template:
    detect the silent-failure condition, open one issue, comment while it persists,
    close it automatically on recovery.
@@ -132,14 +132,16 @@ Regardless of whether we mirror anything from this vault, four ideas port cleanl
 
 ## 3. What's actually relevant to media-toolkit
 
-`media-toolkit` is image/video generation (`pollo-image`, `pollo-video`,
-`image-to-motion`). Ten of the 156 resources touch media generation:
+`media-toolkit` is now a single local skill, `image-to-motion` — the Pollo AI skills were
+removed on 2026-08-23, since Pollo is no longer used. That makes the vault's API guides more
+interesting rather than less: they are the candidate backends if a generation skill returns.
+Ten of the 156 resources touch media generation:
 
 | Resource | What's in it | Useful here? |
 |---|---|---|
 | [`sora-studio-builder`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/sora-studio-builder) | `openai-video-api-guide.md` + a master prompt to build a Sora web UI | **Yes** — the API guide is a reference for a future `sora-video` skill; the master prompt is not our shape |
-| [`banana-squad-image-agent-team`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/banana-squad-image-agent-team) | `gemini-3-image-api-guide.md`, `paperbanana.md`, `spawn-team-prompt.md` | **Yes** — Gemini 3 image API guide is the closest thing to a `pollo-image` sibling backend |
-| [`4o-image-generation-suite`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/4o-image-generation-suite) | A prompt-craft knowledge base (.md + .pdf) for 4o image gen | **Maybe** — prompt-craft material for `skills/pollo-image/templates.md` |
+| [`banana-squad-image-agent-team`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/banana-squad-image-agent-team) | `gemini-3-image-api-guide.md`, `paperbanana.md`, `spawn-team-prompt.md` | **Yes** — the strongest candidate for a replacement image backend |
+| [`4o-image-generation-suite`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/4o-image-generation-suite) | A prompt-craft knowledge base (.md + .pdf) for 4o image gen | **Maybe** — prompt-craft material, if an image skill returns |
 | [`sora-zero-to-hero-prompting-guide`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/sora-zero-to-hero-prompting-guide) | Links only — a Custom GPT and a Notion guide, no files | Marginal — nothing to vendor |
 | [`openai-image-api-n8n-agents`](https://github.com/earlyaidopters/gumroad-resources/tree/main/resources/openai-image-api-n8n-agents) | 4 n8n workflow JSONs (orchestrator, create, edit, sheets) | No — n8n, wrong runtime |
 | `master-canvas-guide-for-n8n-vibe-automation` | n8n canvas guide | No |
@@ -160,8 +162,8 @@ write our own:
   Code, that's the pattern.
 - **`skill-chaining-kit-for-claude-code`** — 10 skills across two chains
   (`brain-chain`, `launch-chain`) designed to hand off to each other. Relevant if we
-  want `pollo-image → image-to-motion → pollo-video` to chain explicitly rather than by
-  the model's judgement.
+  ever want a generate → `image-to-motion` → publish chain to be explicit rather than left
+  to the model's judgement.
 - **`the-claude-folder-a-complete-guide`** — a worked `.claude/skills/` project layout.
 
 ---
