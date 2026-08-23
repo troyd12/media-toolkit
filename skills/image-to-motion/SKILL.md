@@ -46,7 +46,7 @@ Output: `~/Desktop/motion-<preset>-<timestamp>.mp4`
 
 ## Recommended workflow
 
-1. Generate a high-resolution still via `pollo-image` (2K).
+1. Start from a high-resolution still (≥2K). Any source works — a generated image, a photo, a screenshot.
 2. Pipe path into `motionize <path> push-in 5 1920x1080` for a 5-second cinematic clip.
 3. Drop into a video editor (CapCut / Premiere / DaVinci) for stacking, audio, transitions.
 

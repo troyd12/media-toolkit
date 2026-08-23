@@ -1,14 +1,14 @@
 # media-toolkit
 
-AI image + video generation toolkit for Claude Code.
+Cinematic motion for still images in Claude Code — local, free, ffmpeg-based.
 
 ## What's inside
 
+<!-- BEGIN GENERATED: skills-table -->
 | Skill | Purpose | Backend |
 |---|---|---|
-| `pollo-image` | Text-to-image | Pollo AI (`pollo-image-v2`, others) |
-| `pollo-video` | Text-to-video | Pollo AI (Seedance, Kling, Veo, etc.) |
 | `image-to-motion` | Add cinematic motion to stills | Local ffmpeg — no API, no credits |
+<!-- END GENERATED: skills-table -->
 
 ## One-line install
 
@@ -28,26 +28,24 @@ Copy-Item -Recurse -Force $HOME/media-toolkit/skills/* $HOME/.claude/skills/
 Write-Host "media-toolkit skills installed"
 ```
 
-After install, the skills auto-load in every Claude Code session. To uninstall, delete the four folders inside `~/.claude/skills/`.
+<!-- BEGIN GENERATED: uninstall -->
+After install, the skills auto-load in every Claude Code session. To uninstall, delete `image-to-motion/` from `~/.claude/skills/`.
+<!-- END GENERATED: uninstall -->
 
-### 2. API keys
+### 2. Prerequisites
 
-Save raw keys (no quotes, no banners) into these files:
-
-| Service | Path |
-|---|---|
-| Pollo AI | `~/.pollo/key.txt` |
-
-`image-to-motion` requires no key — only ffmpeg installed (`winget install Gyan.FFmpeg`).
+<!-- BEGIN GENERATED: prerequisites -->
+`image-to-motion` needs no API key — only ffmpeg installed (`winget install Gyan.FFmpeg`).
+<!-- END GENERATED: prerequisites -->
 
 ### 3. Shell aliases (optional)
 
 Add to `~/.bashrc`:
+<!-- BEGIN GENERATED: aliases -->
 ```bash
-alias polloimg='bash ~/.claude/skills/pollo-image/generate.sh'
-alias pollovid='bash ~/.claude/skills/pollo-video/generate.sh'
 alias motionize='bash ~/.claude/skills/image-to-motion/generate.sh'
 ```
+<!-- END GENERATED: aliases -->
 
 PowerShell equivalents go in `$PROFILE`.
 
@@ -55,7 +53,6 @@ PowerShell equivalents go in `$PROFILE`.
 
 Inside Claude Code, just ask in natural language:
 
-- *"generate a logo for X"* → `pollo-image` (with template-driven prompt)
 - *"add ken burns motion to that image"* → `image-to-motion`
 - *"5 second cinematic clip from this PNG, vertical for Reels"* → `image-to-motion` with `pan-up` 1080x1920
 
@@ -63,4 +60,4 @@ Or invoke directly from any terminal via the aliases above.
 
 ## License
 
-UNLICENSED — personal use only. APIs are subject to their respective providers' terms.
+UNLICENSED — personal use only.

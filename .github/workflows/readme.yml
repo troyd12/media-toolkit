@@ -1,0 +1,38 @@
+name: readme
+
+# The README tables and the plugin manifest are generated from skills/.
+# This fails the build when a skill is added, renamed, or re-described without
+# regenerating them — the drift that produced "delete the four folders" for a
+# three-skill toolkit.
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "skills/**"
+      - "README.md"
+      - ".claude-plugin/plugin.json"
+      - "tools/build_readme.py"
+      - ".github/workflows/readme.yml"
+  pull_request:
+    paths:
+      - "skills/**"
+      - "README.md"
+      - ".claude-plugin/plugin.json"
+      - "tools/build_readme.py"
+      - ".github/workflows/readme.yml"
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # build_readme.py is stdlib-only, so there is nothing to install.
+      - name: Check README.md and plugin.json are current
+        run: python3 tools/build_readme.py --check

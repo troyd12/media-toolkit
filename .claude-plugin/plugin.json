@@ -1,12 +1,10 @@
 {
   "name": "media-toolkit",
   "version": "0.1.0",
-  "description": "AI image and video generation toolkit for Claude Code. Bundles skills for Pollo AI (image+video) and ffmpeg-based cinematic motion on stills.",
+  "description": "Media toolkit for Claude Code. Applies cinematic camera motion to still images locally with ffmpeg — no API, no credits.",
   "author": "Troy DIXON",
   "license": "UNLICENSED",
   "skills": [
-    "skills/pollo-image",
-    "skills/pollo-video",
     "skills/image-to-motion"
   ]
 }
