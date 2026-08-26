@@ -6,9 +6,14 @@ AI image + video generation toolkit for Claude Code.
 
 | Skill | Purpose | Backend |
 |---|---|---|
-| `pollo-image` | Text-to-image | Pollo AI (`pollo-image-v2`, others) |
+| `pollo-image` | Text-to-image, plus a local upscale/sharpen pass | Pollo AI (`pollo-image-v2`, others) |
 | `pollo-video` | Text-to-video | Pollo AI (Seedance, Kling, Veo, etc.) |
 | `image-to-motion` | Add cinematic motion to stills | Local ffmpeg — no API, no credits |
+
+`pollo-image` generates at **4K by default** (~30 credits; pass `2K` for ~18). It reports the
+real dimensions of what came back, and ships `enhance.sh` for a free local lanczos-upscale and
+sharpen pass on images that still look soft. See `skills/pollo-image/README.md` → *Why is my
+image soft?*
 
 ## One-line install
 
@@ -39,6 +44,7 @@ Save raw keys (no quotes, no banners) into these files:
 | Pollo AI | `~/.pollo/key.txt` |
 
 `image-to-motion` requires no key — only ffmpeg installed (`winget install Gyan.FFmpeg`).
+`pollo-image/enhance.sh` also needs ffmpeg; `pollo-image/generate.sh` does not.
 
 ### 3. Shell aliases (optional)
 
@@ -56,6 +62,7 @@ PowerShell equivalents go in `$PROFILE`.
 Inside Claude Code, just ask in natural language:
 
 - *"generate a logo for X"* → `pollo-image` (with template-driven prompt)
+- *"that image came out blurry"* → `pollo-image` → `enhance.sh`, or regenerate at a higher tier
 - *"add ken burns motion to that image"* → `image-to-motion`
 - *"5 second cinematic clip from this PNG, vertical for Reels"* → `image-to-motion` with `pan-up` 1080x1920
 

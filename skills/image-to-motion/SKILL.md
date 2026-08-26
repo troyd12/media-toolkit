@@ -41,19 +41,45 @@ Output: `~/Desktop/motion-<preset>-<timestamp>.mp4`
 
 - **Duration:** 5 seconds (override with 3rd arg)
 - **Output size:** 1920x1080 (full HD). Use `3840x2160` for 4K, `1080x1920` for vertical (Reels/TikTok).
-- **Codec:** H.264 (`libx264`), CRF 18, faststart for web playback.
+- **Codec:** H.264 (`libx264`), `-preset slow`, CRF 16, `-tune stillimage`, faststart for web playback.
 - **FPS:** 30.
+- **Resampling:** lanczos throughout, plus a light unsharp pass after the downscale.
+
+Env overrides: `MOTION_CRF` (lower is sharper, larger file), `MOTION_SHARPEN` (unsharp amount,
+`0` disables), `MOTION_OUT_DIR`, `FFMPEG_PATH`.
 
 ## Recommended workflow
 
-1. Generate a high-resolution still via `pollo-image` (2K).
+1. Generate a high-resolution still via `pollo-image` at **4K**. The camera move crops into the
+   image, so the still must carry more resolution than the video output — a 2K still pushed
+   into for a 1080p clip is running out of pixels by the end of the move.
 2. Pipe path into `motionize <path> push-in 5 1920x1080` for a 5-second cinematic clip.
 3. Drop into a video editor (CapCut / Premiere / DaVinci) for stacking, audio, transitions.
 
+## Sharpness
+
+If a clip looks softer than the still it came from, the cause is almost always one of these:
+
+1. **The source still is too small.** A push-in ends at 1.18x zoom, so a 1080p clip is reading
+   roughly a 2270px-wide window out of the source by the final frame. Generate the still at 4K.
+2. **The output size is smaller than where it will be shown.** A 1080p clip upscaled to a 4K
+   timeline is soft no matter how clean the render was. Pass `3840x2160`.
+3. **The still was already soft.** Run `pollo-image/enhance.sh` on it first, or regenerate with
+   the blur vocabulary removed from the prompt — see that skill's templates.
+4. **Over-compression.** Drop `MOTION_CRF` to 14 for a larger, cleaner file.
+
 ## Pitfalls
 
-- Source image needs sufficient resolution. If source is 1024×1024 and output is 1920×1080, ffmpeg upscales, which can soften details. Generate at ≥2K for best results.
-- ffmpeg's `zoompan` filter has subpixel jitter at low zoom rates — the 4x working-resolution trick in `generate.sh` mitigates this.
+- Source image needs sufficient resolution. If source is 1024×1024 and output is 1920×1080, ffmpeg upscales, which can soften details. Generate at 4K for best results.
+- ffmpeg's `zoompan` filter is the main source of mush. Two things mitigate it here: the still
+  is prescaled well above the render size, and zoompan renders into a supersampled buffer that
+  is resampled down with lanczos afterwards.
+- Camera moves are closed-form functions of the frame index rather than per-frame accumulation
+  (`zoom+0.001`). Accumulating causes zoompan's subpixel jitter, and it also made the size of
+  the move depend on duration — a 10s push-in used to travel twice as far as a 5s one. Moves
+  are now duration-independent and eased in and out.
+- The working resolution is capped at 8192px on the long edge. The old code always used 4x the
+  output, which at 4K meant a 15360x8640 intermediate — enough to exhaust memory or fail.
 - Heavy diagonal pans can show edges if the image's aspect doesn't match output. The script crops to fit.
 
 ## How the User Runs It

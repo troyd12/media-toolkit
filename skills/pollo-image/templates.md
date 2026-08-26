@@ -2,9 +2,38 @@
 
 Fill in `{subject}` / `{brand}` / `{colors}` — rest is tuned wording that consistently produces clean results on `pollo-image-v2`.
 
+## Sharpness — read this before filling a template
+
+Perceived quality is set by three things, in this order: **resolution**, **what the prompt
+asks the model to blur**, and **the aspect ratio you generate at**. Prompt wording will not
+rescue a 2K render, and no resolution will rescue a prompt that asks for soft focus.
+
+**Words that instruct blur.** These are legitimate photographic language and the model obeys
+them literally. Use them only when you want the blur:
+
+> shallow depth of field · f/1.8 · bokeh · soft focus · dreamy · atmospheric haze · soft light
+
+`cinematic` is the subtle one — it tends to pull in grain, haze and a lifted black point along
+with the colour grade.
+
+**Words that ask for crispness:**
+
+> sharp focus · deep focus · tack sharp · crisp edges · high detail · fine detail · everything in focus
+
+**Rules of thumb**
+
+- Anything with **text, a logo, or a UI in it** should be crisp everywhere. Never pair those
+  with depth-of-field language.
+- Anything that will be **cropped into, zoomed, or animated** later should be crisp, because
+  the downstream move magnifies whatever softness is already there.
+- **Generate at the aspect ratio you will ship.** Generating 1:1 and cropping to 16:9 discards
+  44% of the pixels — the same visible loss as dropping a resolution tier.
+- A deliberately shallow portrait is *not* a quality problem. Blur that the user asked for
+  reads as depth; blur they didn't ask for reads as a soft image.
+
 ## logo
 **Use when:** user says "logo for X", "make me a logo".
-**Default aspect:** 1:1. **Default res:** 2K.
+**Default aspect:** 1:1. **Default res:** 4K.
 **Template:**
 > Minimalist modern tech logo for **{brand}**. Clean bold geometric sans-serif wordmark, {colors or "electric cyan to deep blue gradient"} on pure white background. {optional: small icon accent to the left — hexagonal node-network / circuit motif}. Centered, symmetric, sharp vector-style edges, flat design, high contrast, professional branding. No extra text or taglines.
 
@@ -28,7 +57,12 @@ Fill in `{subject}` / `{brand}` / `{colors}` — rest is tuned wording that cons
 **Use when:** portrait, professional/cinematic.
 **Default aspect:** 2:3 or 3:4.
 **Template:**
-> Cinematic professional headshot of **{subject}**, {age/ethnicity/gender optional}, {wardrobe}, soft directional rim light, shallow depth of field f/1.8, 85mm lens, neutral studio background, color-graded, high detail, photorealistic.
+> Cinematic professional headshot of **{subject}**, {age/ethnicity/gender optional}, {wardrobe}, soft directional rim light, shallow depth of field f/1.8, 85mm lens, neutral studio background, color-graded, sharp focus on the eyes, high detail, photorealistic.
+
+**Note:** the shallow depth of field here is intentional — it blurs the *background*, which is
+what makes a headshot read as professional. `sharp focus on the eyes` keeps the subject itself
+crisp. If the user wants the whole frame sharp (corporate directory, a shot to be cropped
+into), replace `shallow depth of field f/1.8` with `deep focus f/8, everything sharp`.
 
 ## product-shot
 **Use when:** catalog/e-commerce photo.
@@ -41,6 +75,10 @@ Fill in `{subject}` / `{brand}` / `{colors}` — rest is tuned wording that cons
 **Default aspect:** 16:9.
 **Template:**
 > Cinematic wide hero banner image: **{scene}**. Cinematic lighting, atmospheric, shallow depth of field, rich color grade, negative space on {left/right/center} for text overlay, 16:9, photorealistic.
+
+**Note:** hero banners usually carry headline text over the negative space, and text over a
+soft background reads as a soft image. If text is going on top, drop `shallow depth of field`
+and `atmospheric` and add `sharp focus throughout, crisp detail`.
 
 ## illustration
 **Use when:** friendly flat illustration for web/app.
@@ -63,4 +101,4 @@ Fill in `{subject}` / `{brand}` / `{colors}` — rest is tuned wording that cons
 
 ## Usage in Claude
 
-When user says any trigger phrase (e.g. *"logo for LAB24"*, *"make a headshot of..."*), pick the matching template, fill slots, and call `generate.sh` with appropriate aspect/resolution (defaults noted above). Honor the global 2K resolution policy.
+When user says any trigger phrase (e.g. *"logo for LAB24"*, *"make a headshot of..."*), pick the matching template, fill slots, and call `generate.sh` with appropriate aspect/resolution (defaults noted above). Honor the global 4K resolution policy in `SKILL.md`, and check the filled prompt against the **Sharpness** section before submitting.
